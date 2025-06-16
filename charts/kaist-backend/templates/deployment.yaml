@@ -1,0 +1,55 @@
+# kaist-backend/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaist-backend
+  labels:
+    app: kaist-backend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: kaist-backend
+  template:
+    metadata:
+      labels:
+        app: kaist-backend
+    spec:
+      containers:
+        - name: kaist-backend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          args:
+            {{- range .Values.args }}
+            - {{ . | quote }}
+            {{- end }}
+          env:
+            {{- range $key, $value := .Values.config }}
+            - name: {{ $key }}
+              valueFrom:
+                configMapKeyRef:
+                  name: kaist-config
+                  key: {{ $key }}
+            {{- end }}
+            {{- range $key, $value := .Values.secrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: kaist-secret
+                  key: {{ $key }}
+            {{- end }}
+          {{- if .Values.gcs.enabled }}
+          volumeMounts:
+            - name: gcs-key
+              mountPath: {{ .Values.gcs.mountPath }}
+              subPath: gcs-service-account.json
+          {{- end }}
+      {{- if .Values.gcs.enabled }}
+      volumes:
+        - name: gcs-key
+          secret:
+            secretName: {{ .Values.gcs.secretName }}
+      {{- end }}
+

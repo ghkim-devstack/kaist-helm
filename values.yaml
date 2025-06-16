@@ -1,0 +1,28 @@
+kaist-backend:
+  image:
+    repository: ghkimdevstack/kaist-ai-backend
+    tag: latest
+
+  service:
+    type: ClusterIP
+    port: 8001
+
+  ingress:
+    enabled: true
+    host: backend.local.ai
+    path: /
+
+kaist-frontend:
+  image:
+    repository: ghkimdevstack/kaist-ai-frontend
+    tag: latest
+
+  service:
+    type: ClusterIP
+    port: 3000
+
+  ingress:
+    enabled: true
+    host: frontend.local.ai
+    path: /
+

@@ -1,0 +1,53 @@
+# kaist-ai-platform/charts/kaist-backend/values.yaml
+
+replicaCount: 1
+
+image:
+  repository: kaist-backend
+  tag: v1
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 8001      
+  nodePort: 31635 
+resources: {}
+
+config:
+  SESSION_SECRET: myrandomsecretkey
+  CLIENT_ID: KAIST-contest
+  CLIENT_SECRET: m0Efgsio0EOj90v6Prg5wvES5w3o13nf
+  REALM: KAIST
+  BASE_URL: http://211.175.140.68:31635
+  ISSUER_BASE_URL: https://211.175.140.68:31115/realms/KAIST
+  ADMIN_ROLE: kaist-admin
+  API_TOKEN: c454ec8b5dc445dd9552e7a4d28707b3
+  JUPYTER_SERVER_URL: https://jupyter-test-kaist.duckdns.org
+  JUPYTER_INTERNAL_URL: http://jupyter-test-kaist.duckdns.org
+  DATABASE_URL: mysql+pymysql://root:devSTACK1!@211.175.140.68:31810/kaist_contest
+  FRONTEND_URL: http://localhost:5173
+  GCS_BUCKET: datasets-kaist
+  OBJECT_STORAGE_BUCKET: datasets-kaist
+  GOOGLE_APPLICATION_CREDENTIALS: /app/gcs-service-account.json
+
+secrets:
+  OBJECT_STORAGE_ACCESS_KEY: admin
+  OBJECT_STORAGE_SECRET_KEY: d4F1rocC1q0
+  OBJECT_STORAGE_ENDPOINT: http://211.175.140.68:31920
+  OPENAI_API_KEY: sk-p
+
+gcs:
+  enabled: true
+  secretName: gcs-service-account
+  mountPath: /app/gcs-service-account.json
+  
+envFrom:
+  configMaps: []
+  secrets: []
+
+args:
+  - "uvicorn"
+  - "app.main:app"
+  - "--host=0.0.0.0"
+  - "--port=8001"
+  - "--reload"  # dev mode

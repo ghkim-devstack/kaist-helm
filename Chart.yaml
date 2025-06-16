@@ -1,0 +1,14 @@
+# kaist-ai-platform/Chart.yaml
+apiVersion: v2
+name: kaist-platform
+description: Umbrella chart for KAIST AI contest platform
+version: 0.1.0
+type: application
+dependencies:
+  - name: kaist-backend
+    version: "*"
+    repository: "file://../kaist-backend"
+  - name: kaist-frontend
+    version: "*"
+    repository: "file://../kaist-frontend"
+

@@ -1,0 +1,7 @@
+# charts/kaist-frontend/Chart.yaml
+apiVersion: v2
+name: kaist-frontend
+description: KAIST AI Platform frontend chart
+version: 0.1.0
+type: application
+

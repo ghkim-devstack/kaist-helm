@@ -27,12 +27,20 @@ spec:
             {{- end }}
           env:
             {{- range $key, $value := .Values.config }}
+            {{- if ne $key "GOOGLE_APPLICATION_CREDENTIALS" }}
             - name: {{ $key }}
               valueFrom:
                 configMapKeyRef:
                   name: kaist-config
                   key: {{ $key }}
             {{- end }}
+            {{- end }}
+
+            {{- if .Values.gcs.enabled }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: {{ .Values.gcs.mountPath }}
+            {{- end }}
+
             {{- range $key, $value := .Values.secrets }}
             - name: {{ $key }}
               valueFrom:
@@ -40,12 +48,14 @@ spec:
                   name: kaist-secret
                   key: {{ $key }}
             {{- end }}
+
           {{- if .Values.gcs.enabled }}
           volumeMounts:
             - name: gcs-key
               mountPath: {{ .Values.gcs.mountPath }}
               subPath: gcs-service-account.json
           {{- end }}
+
       {{- if .Values.gcs.enabled }}
       volumes:
         - name: gcs-key

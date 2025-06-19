@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NAMESPACE=kaist
-CHART_PATH=./charts/kaist-backend
+CHART_PATH=.
 
 # Ensure namespace exists
 kubectl get namespace "$NAMESPACE" &>/dev/null || kubectl create namespace "$NAMESPACE"

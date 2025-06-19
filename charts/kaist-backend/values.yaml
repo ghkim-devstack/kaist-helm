@@ -44,7 +44,7 @@ secrets:
 gcs:
   enabled: true
   secretName: gcs-service-account
-  mountPath: /app/gcs-service-account.json
+  mountPath: /app/app/gcs-service-account.json
   
 args:
   - "uvicorn"

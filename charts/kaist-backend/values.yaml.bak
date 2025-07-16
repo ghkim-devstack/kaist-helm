@@ -4,11 +4,9 @@ replicaCount: 1
 
 image:
   repository: kaist-backend
-  tag: v4.2
-  pullPolicy: Never
+  tag: v3.6
 
-nodeSelector:
-  kubernetes.io/hostname: ai-contest-seoul-vm 
+  pullPolicy: Never
 
 service:
   type: NodePort
@@ -30,9 +28,9 @@ config:
   BASE_URL: https://kasiai.kaist.ac.kr
   ISSUER_BASE_URL: https://kasiaiauth.kaist.ac.kr/realms/KAIST
   ADMIN_ROLE: kaist-admin
-  API_TOKEN: b9c08a3238b84cc38dac2273187b8331 
-  JUPYTER_SERVER_URL: https://kasiaijupyter.kaist.ac.kr
-  JUPYTER_INTERNAL_URL: http://hub:8081
+  API_TOKEN: 0c3da07d93e545fca2ef613deb8c96e1
+  JUPYTER_SERVER_URL: https://jupyter-kasit.duckdns.org
+  JUPYTER_INTERNAL_URL: https://jupyter-kaist.duckdns.org
   DATABASE_URL: mysql+pymysql://root:devSTACK1!@35.216.105.234:31920/kaist_contest
   FRONTEND_URL: https://kasiai.kaist.ac.kr
   GCS_BUCKET: kaist_ai_contest_2025
@@ -50,18 +48,10 @@ gcs:
   secretName: gcs-service-account
   mountPath: /app/app/gcs-service-account.json
   
-dataset:
-  enabled: true
-  pvcName: final-dataset-kaist-pvc
-  mountPath: /mnt/final-dataset
-  readOnly: true
-
-
 args:
-  - gunicorn
-  - app.main:app
-  - --workers=2
-  - --worker-class=uvicorn.workers.UvicornWorker
-  - --bind=0.0.0.0:8001
-  - --access-logfile=-
-  - --access-logformat=%(h)s %(l)s %(u)s [%(t)s] \"%(r)s\" %(s)s %(b)s
+  - "uvicorn"
+  - "app.main:app"
+  - "--host=0.0.0.0"
+  - "--proxy-headers"
+  - "--port=8001"
+  - "--reload"  # dev mode

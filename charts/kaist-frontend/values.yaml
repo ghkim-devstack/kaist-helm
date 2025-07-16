@@ -1,0 +1,29 @@
+# kaist-ai-platform/charts/kaist-frontend/values.yaml
+
+replicaCount: 1
+
+image:
+  repository: kaist-frontend
+  tag: "1.2.12"
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 8001
+  nodePort: 31634
+
+env:
+  VITE_APP_APISERVER: http://kasiai.kaist.ac.kr
+  VITE_JUPYTERHUB_URL: http://kasiaijupyter.kaist.ac.kr
+  VITE_KEYCLOAK_URL: https://kasiaiauth.kaist.ac.kr/realms/KAIST/protocol/openid-connect/auth?client_id=KAIST-contest&redirect_uri=https://kasiai.kaist.ac.kr&response_type=code&scope=openid
+
+ingress:
+  enabled: true
+  hosts:
+    - host: kasiai.kaist.ac.kr
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources: {}
+

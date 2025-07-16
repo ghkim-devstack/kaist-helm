@@ -1,7 +1,6 @@
-# charts/kaist-frontend/Chart.yaml
 apiVersion: v2
 name: kaist-frontend
-description: KAIST AI Platform frontend chart
+description: A Helm chart for Vite React app served with nginx for Kaist AI contest
 version: 0.1.0
-type: application
+appVersion: "1.0.0"
 
